@@ -2,8 +2,10 @@
 rem usage: make fqdn alias
 set ALIAS=%2
 set FQDN=%1
+rem set SANs example below, remove comment to use and replace "echo subjectAltName..."
+set SAN=,DNS.2:instance-20210307-1120.subnet.vcn.oraclevcn.com,DNS.3:instance-20210307-1120,DNS.4:sblmde01,DNS.5:*.oraclevcn.com
 rem CHANGE_ME! :)
-set JAVA=C:\JDK\bin
+set JAVA=C:\JDK
 set SSL=C:\OpenSSL\bin
 set SIEBEL=C:\keymaker
 set PASSWORD=siebel
@@ -11,7 +13,7 @@ set PASSWORD=siebel
 rem DO NOT CHANGE
 set OPENSSL_CONF=%SSL%\openssl.cfg
 rem set SAN=DNS.1:%FQDN%
-rmdir %SIEBEL%\%FQDN%
+rmdir /S /Q %SIEBEL%\%FQDN%
 mkdir %SIEBEL%\%FQDN%
 
 %JAVA%\keytool -genkey -alias %ALIAS% -keystore %SIEBEL%\%FQDN%\siebelkeystore.jks -keyalg RSA -sigalg SHA256withRSA -dname "cn=%FQDN%" -storepass %PASSWORD% -keypass %PASSWORD%
@@ -21,7 +23,9 @@ mkdir %SIEBEL%\%FQDN%
 %SSL%\openssl x509 -signkey %SIEBEL%\%FQDN%\cakey.pem -req -days 3650 -in %SIEBEL%\%FQDN%\careq.pem -out %SIEBEL%\%FQDN%\caroot.cer -extfile v3.txt -passin pass:%PASSWORD%
 %JAVA%\keytool -printcert -v -file %SIEBEL%\%FQDN%\caroot.cer
 echo basicConstraints=CA:FALSE>> %SIEBEL%\%FQDN%\ext.cnf
-echo subjectAltName=DNS.1:%FQDN%>> %SIEBEL%\%FQDN%\ext.cnf
+rem echo subjectAltName=DNS.1:%FQDN%>> %SIEBEL%\%FQDN%\ext.cnf
+rem set SANs example
+echo subjectAltName=DNS.1:%FQDN%%SAN%>> %SIEBEL%\%FQDN%\ext.cnf
 echo extendedKeyUsage=serverAuth,clientAuth>> %SIEBEL%\%FQDN%\ext.cnf
 rem copy ext.cnf %SIEBEL%\%FQDN%\ext.cnf
 echo 1234 > %SIEBEL%\%FQDN%\serial.txt
