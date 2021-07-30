@@ -19,7 +19,7 @@ mkdir %SIEBEL%\%FQDN%
 %JAVA%\keytool -genkey -alias %ALIAS% -keystore %SIEBEL%\%FQDN%\siebelkeystore.jks -keyalg RSA -sigalg SHA256withRSA -dname "cn=%FQDN%" -storepass %PASSWORD% -keypass %PASSWORD%
 %JAVA%\keytool -list -v -keystore %SIEBEL%\%FQDN%\siebelkeystore.jks -storepass %PASSWORD% -keypass %PASSWORD%
 %JAVA%\keytool -certreq -alias %ALIAS% -keystore %SIEBEL%\%FQDN%\siebelkeystore.jks -file %SIEBEL%\%FQDN%\siebelkeystore.csr -storepass %PASSWORD% -keypass %PASSWORD%
-%SSL%/openssl req -newkey rsa:2048 -keyout %SIEBEL%\%FQDN%\cakey.pem -out %SIEBEL%\%FQDN%\careq.pem -subj "/CN=%FQDN%" -sha256 -passout pass:%PASSWORD%
+%SSL%\openssl req -newkey rsa:2048 -keyout %SIEBEL%\%FQDN%\cakey.pem -out %SIEBEL%\%FQDN%\careq.pem -subj "/CN=%FQDN%" -sha256 -passout pass:%PASSWORD%
 %SSL%\openssl x509 -signkey %SIEBEL%\%FQDN%\cakey.pem -req -days 3650 -in %SIEBEL%\%FQDN%\careq.pem -out %SIEBEL%\%FQDN%\caroot.cer -extfile v3.txt -passin pass:%PASSWORD%
 %JAVA%\keytool -printcert -v -file %SIEBEL%\%FQDN%\caroot.cer
 echo basicConstraints=CA:FALSE>> %SIEBEL%\%FQDN%\ext.cnf
