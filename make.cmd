@@ -3,9 +3,9 @@ rem usage: make fqdn alias
 set ALIAS=%2
 set FQDN=%1
 rem set SANs example below, remove comment to use and replace "echo subjectAltName..."
-set SAN=,DNS.2:instance-20210307-1120.subnet.vcn.oraclevcn.com,DNS.3:instance-20210307-1120,DNS.4:sblmde01,DNS.5:*.oraclevcn.com
+set SAN=,DNS.2:another-machine.subnet.vcn.oraclevcn.com,DNS.3:*.subnet.vcn.oraclevcn.com,DNS.4:*.oraclevcn.com
 rem CHANGE_ME! :)
-set JAVA=C:\JDK
+set JAVA=C:\JDK\bin
 set SSL=C:\OpenSSL\bin
 set SIEBEL=C:\keymaker
 set PASSWORD=siebel
