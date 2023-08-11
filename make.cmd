@@ -16,7 +16,7 @@ rem set SAN=DNS.1:%FQDN%
 rmdir /S /Q %SIEBEL%\%FQDN%
 mkdir %SIEBEL%\%FQDN%
 
-%JAVA%\keytool -genkey -alias %ALIAS% -keystore %SIEBEL%\%FQDN%\siebelkeystore.jks -keyalg RSA -sigalg SHA256withRSA -dname "cn=%FQDN%" -storepass %PASSWORD% -keypass %PASSWORD%
+%JAVA%\keytool -genkey -alias %ALIAS% -keystore %SIEBEL%\%FQDN%\siebelkeystore.jks -keyalg RSA -sigalg SHA256withRSA -dname "cn=%FQDN%" -storepass %PASSWORD% -keypass %PASSWORD% -storetype JKS
 %JAVA%\keytool -list -v -keystore %SIEBEL%\%FQDN%\siebelkeystore.jks -storepass %PASSWORD% -keypass %PASSWORD%
 %JAVA%\keytool -certreq -alias %ALIAS% -keystore %SIEBEL%\%FQDN%\siebelkeystore.jks -file %SIEBEL%\%FQDN%\siebelkeystore.csr -storepass %PASSWORD% -keypass %PASSWORD%
 %SSL%\openssl req -newkey rsa:2048 -keyout %SIEBEL%\%FQDN%\cakey.pem -out %SIEBEL%\%FQDN%\careq.pem -subj "/CN=%FQDN%" -sha256 -passout pass:%PASSWORD%
